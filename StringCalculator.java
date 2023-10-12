@@ -12,7 +12,6 @@ public class StringCalculator {
 
         String delimiterRegex = ",|\\\\n"; 
 
-        
         if (numbers.startsWith("//")) {
             Matcher matcher = Pattern.compile("//(\\[.+\\]|\\*|[^\\n]+)\\\\n(.+)").matcher(numbers);
             if (matcher.matches()) {
@@ -25,7 +24,6 @@ public class StringCalculator {
             }
         }
 
-        
         String[] numberArray = numbers.split(delimiterRegex);
         int sum = 0;
         List<Integer> negatives = new ArrayList<>();
@@ -35,7 +33,7 @@ public class StringCalculator {
                 int parsedNumber = Integer.parseInt(number);
                 if (parsedNumber < 0) {
                     negatives.add(parsedNumber);
-                } else {
+                } else if (parsedNumber <= 1000) { 
                     sum += parsedNumber;
                 }
             } catch (NumberFormatException e) {
@@ -66,3 +64,4 @@ public class StringCalculator {
         }
     }
 }
+
