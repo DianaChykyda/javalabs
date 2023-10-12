@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringCalculator {
     public static int Add(String numbers) {
@@ -6,18 +8,29 @@ public class StringCalculator {
             return 0;
         }
 
-        String[] numberArray = numbers.split(",");
+        String delimiterRegex = ",|\\\\n"; 
+
+        if (numbers.startsWith("//")) {
+            Matcher matcher = Pattern.compile("//(\\[.+\\]|\\*|[^\\n]+)\\\\n(.+)").matcher(numbers);
+            if (matcher.matches()) {
+                String customDelimiter = matcher.group(1);
+                if (customDelimiter.startsWith("[") && customDelimiter.endsWith("]")) {
+                    customDelimiter = customDelimiter.substring(1, customDelimiter.length() - 1);
+                }
+                delimiterRegex = Pattern.quote(customDelimiter) + "|,|\\\\n"; 
+                numbers = matcher.group(2);
+            }
+        }
+
+        String[] numberArray = numbers.split(delimiterRegex);
         int sum = 0;
 
         for (String number : numberArray) {
-            String[] subNumbers = number.split("\\\\n"); 
-            for (String subNumber : subNumbers) {
-                try {
-                    int parsedNumber = Integer.parseInt(subNumber);
-                    sum += parsedNumber;
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException("Invalid input format");
-                }
+            try {
+                int parsedNumber = Integer.parseInt(number);
+                sum += parsedNumber;
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Invalid input format");
             }
         }
 
