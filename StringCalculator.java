@@ -1,6 +1,8 @@
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StringCalculator {
     public static int Add(String numbers) {
@@ -10,6 +12,7 @@ public class StringCalculator {
 
         String delimiterRegex = ",|\\\\n"; 
 
+        
         if (numbers.startsWith("//")) {
             Matcher matcher = Pattern.compile("//(\\[.+\\]|\\*|[^\\n]+)\\\\n(.+)").matcher(numbers);
             if (matcher.matches()) {
@@ -22,16 +25,26 @@ public class StringCalculator {
             }
         }
 
+        
         String[] numberArray = numbers.split(delimiterRegex);
         int sum = 0;
+        List<Integer> negatives = new ArrayList<>();
 
         for (String number : numberArray) {
             try {
                 int parsedNumber = Integer.parseInt(number);
-                sum += parsedNumber;
+                if (parsedNumber < 0) {
+                    negatives.add(parsedNumber);
+                } else {
+                    sum += parsedNumber;
+                }
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("Invalid input format");
             }
+        }
+
+        if (!negatives.isEmpty()) {
+            throw new IllegalArgumentException("Negatives not allowed: " + negatives);
         }
 
         return sum;
