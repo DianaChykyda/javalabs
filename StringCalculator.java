@@ -13,7 +13,7 @@ public class StringCalculator {
         String delimiterRegex = ",|\\\\n"; 
 
         if (numbers.startsWith("//")) {
-            Matcher matcher = Pattern.compile("//(\\[.+\\]|\\*|[^\\n]+)\\\\n(.+)").matcher(numbers);
+            Matcher matcher = Pattern.compile("//(\\[.+\\]|[^\\n]+)\\\\n(.+)").matcher(numbers);
             if (matcher.matches()) {
                 String customDelimiter = matcher.group(1);
                 if (customDelimiter.startsWith("[") && customDelimiter.endsWith("]")) {
@@ -51,7 +51,7 @@ public class StringCalculator {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter numbers separated by commas and/or '\\n' (e.g., 1,2\\n4): ");
+        System.out.print("Enter numbers separated by custom delimiters and/or '\\n' (e.g., //[***]\\n1***2): ");
         String input = scanner.nextLine();
 
         scanner.close();
@@ -64,4 +64,3 @@ public class StringCalculator {
         }
     }
 }
-
