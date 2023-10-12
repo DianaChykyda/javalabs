@@ -7,9 +7,7 @@ public class StringCalculator {
         }
 
         String[] numberArray = numbers.split(",");
-        if (numberArray.length > 2) {
-            throw new IllegalArgumentException("Too many numbers");
-        }
+        
         int sum = 0;
 
         for (String number : numberArray) {
@@ -39,5 +37,5 @@ public class StringCalculator {
             System.out.println(e.getMessage());
         }
     }
+    
 }
-
