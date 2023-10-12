@@ -13,13 +13,15 @@ public class StringCalculator {
         String delimiterRegex = ",|\\\\n"; 
 
         if (numbers.startsWith("//")) {
-            Matcher matcher = Pattern.compile("//(\\[.+\\]|[^\\n]+)\\\\n(.+)").matcher(numbers);
+            Matcher matcher = Pattern.compile("//(\\[.+\\]+)\\\\n(.+)").matcher(numbers);
             if (matcher.matches()) {
-                String customDelimiter = matcher.group(1);
-                if (customDelimiter.startsWith("[") && customDelimiter.endsWith("]")) {
-                    customDelimiter = customDelimiter.substring(1, customDelimiter.length() - 1);
+                String customDelimiters = matcher.group(1);
+                customDelimiters = customDelimiters.substring(1, customDelimiters.length() - 1); 
+                String[] customDelimiterArray = customDelimiters.split("\\]\\[");
+                for (String customDelimiter : customDelimiterArray) {
+                    delimiterRegex += "|" + Pattern.quote(customDelimiter); 
                 }
-                delimiterRegex = Pattern.quote(customDelimiter) + "|,|\\\\n"; 
+                delimiterRegex += "|,|\\\\n"; 
                 numbers = matcher.group(2);
             }
         }
@@ -51,7 +53,7 @@ public class StringCalculator {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.print("Enter numbers separated by custom delimiters and/or '\\n' (e.g., //[***]\\n1***2): ");
+        System.out.print("Enter numbers separated by custom delimiters and/or '\\n' (e.g., //[*][%]\\n1*2%3): ");
         String input = scanner.nextLine();
 
         scanner.close();
